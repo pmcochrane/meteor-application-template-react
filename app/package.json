@@ -36,6 +36,7 @@
     "testcafe": "^3.5.0"
   },
   "scripts": {
+    "pmc": "meteor --port 8600 --exclude-archs web.browser.legacy,web.cordova --settings ../config/settings.development.json",
     "start": "meteor --no-release-check --exclude-archs web.browser.legacy,web.cordova --settings ../config/settings.development.json",
     "lint": "eslint --quiet --ext .jsx --ext .js ./imports && eslint --quiet --ext .js ./tests",
     "lint-fix": "eslint --quiet --fix --ext .jsx --ext .js ./imports && eslint --quiet --ext .js ./tests",
