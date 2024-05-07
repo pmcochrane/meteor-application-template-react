@@ -26,12 +26,12 @@ const AddStuff = () => {
 	const navigate = useNavigate();
 	
 	// On submit, insert the data.
-	const submit = (data, formRef) => {
+	const submit = (data: any, formRef: any) => {
 		const { name, quantity, condition } = data;
-		const owner = Meteor.user().username;
+		const owner = (Meteor.user()?.username) || 'Unknown User';
 		Stuffs.collection.insert(
 			{ name, quantity, condition, owner },
-			(error) => {
+			(error: any) => {
 				if (error) {
 					swal('Error', error.message, 'error');
 				} else {
@@ -44,7 +44,7 @@ const AddStuff = () => {
 	};
 
 	// Render the form. Use Uniforms: https://github.com/vazco/uniforms
-	let fRef = null;
+	let fRef: any = null;
 	return (
 		<Container className="py-3">
 			<Row className="justify-content-center">
@@ -54,7 +54,7 @@ const AddStuff = () => {
 						<Card>
 							<Card.Body>
 								<TextField name="name" />
-								<NumField name="quantity" decimal={null} />
+								<NumField name="quantity" decimal={false} />
 								<SelectField name="condition" />
 								<SubmitField value="Submit" />
 								<ErrorsField />

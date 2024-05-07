@@ -27,7 +27,7 @@ react-meteor-data                # React higher-order component for reactively t
 
 # Accounts
 accounts-password@2.4.0
-alanning:roles                   # support roles like 'admin'
+alanning:roles@3.6.3                   # support roles like 'admin'
 
 # Collection support
 aldeed:collection2
@@ -42,3 +42,4 @@ montiapm:agent                   # see http://montiapm.com
 zodern:hide-production-sourcemaps
 hot-module-replacement@0.5.3
 dev-error-overlay@0.1.2
+typescript

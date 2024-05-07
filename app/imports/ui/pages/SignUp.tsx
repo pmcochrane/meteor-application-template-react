@@ -10,7 +10,7 @@ import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstra
 /**
  * SignUp component is similar to signin component, but we create a new user instead.
  */
-const SignUp = ({ location }) => {
+const SignUp = ({ location }: any) => {
   const [error, setError] = useState('');
   const [redirectToReferer, setRedirectToRef] = useState(false);
 
@@ -21,11 +21,11 @@ const SignUp = ({ location }) => {
   const bridge = new SimpleSchema2Bridge(schema);
 
   /* Handle SignUp submission. Create user account and a profile entry, then redirect to the home page. */
-  const submit = (doc) => {
+  const submit = (doc: any) => {
     const { email, password } = doc;
     Accounts.createUser({ email, username: email, password }, (err) => {
       if (err) {
-        setError(err.reason);
+        setError(err.message);
       } else {
         setError('');
         setRedirectToRef(true);

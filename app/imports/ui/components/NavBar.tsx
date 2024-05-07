@@ -1,15 +1,15 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
-import { Nav, Navbar, NavDropdown, Row, Col} from 'react-bootstrap';
-import { BoxArrowRight, PersonFill, PersonPlusFill } from 'react-bootstrap-icons';
+import { Nav, Navbar, Row, Col} from 'react-bootstrap';
+// import { BoxArrowRight, PersonFill, PersonPlusFill } from 'react-bootstrap-icons';
 
 const NavBar = () => {
 	// useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
 	const { currentUser } = useTracker(() => ({
-		currentUser: Meteor.user() ? Meteor.user().username : '',
+		currentUser: Meteor.user() ? Meteor.user()?.username : '',
 	}), []);
 
 	return (
@@ -24,7 +24,7 @@ const NavBar = () => {
 						{currentUser ? ([
 							<Nav.Link id="list-stuff-nav" as={NavLink} to="/stuff/list" key="list">Stuff</Nav.Link>,
 						]) : ''}
-						{Roles.userIsInRole(Meteor.userId(), 'admin') ? (
+						{Roles.userIsInRole(Meteor.userId()!, 'admin') ? (
 							<Nav.Link id="list-stuff-admin-nav" as={NavLink} to="stuff/listadmin" key="admin">Stuff (Admin)</Nav.Link>
 						) : ''}
 					</Nav>
@@ -32,15 +32,15 @@ const NavBar = () => {
 						{currentUser === '' ? (
 							<Row className="align-items-center">
 								<Col>
-									<Link className="ms-1 btn btn-primary py-0" as={NavLink} to="/signin">Sign In</Link>
-									<Link className="ms-1 btn btn-light py-0" as={NavLink} to="/signup">Register New Player</Link>
+									<NavLink className="ms-1 btn btn-primary py-0" to="/signin">Sign In</NavLink>
+									<NavLink className="ms-1 btn btn-light py-0" to="/signup">Register New Player</NavLink>
 								</Col>
 							</Row>
 						) : (
 							<Row className="align-items-center">
 								<Col>
 									<span id="navbar-current-user">{currentUser}</span>
-									<Link className="ms-1 btn btn-light py-0" as={NavLink} to="/signout">Sign Out</Link>
+									<NavLink className="ms-1 btn btn-light py-0" to="/signout">Sign Out</NavLink>
 								</Col>
 							</Row>
 						)}

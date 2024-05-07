@@ -20,12 +20,13 @@ const SignIn = () => {
 	const bridge = new SimpleSchema2Bridge(schema);
 
 	// Handle Signin submission using Meteor's account mechanism.
-	const submit = (doc) => {
+	const submit = (doc: any) => {
 		// console.log('submit', doc, redirect);
-		const { email, password } = doc;
-		Meteor.loginWithPassword(email, password, (err) => {
+		// const { email, password } = doc;
+		Meteor.loginWithPassword(doc.email, doc.password, (err) => {
 			if (err) {
-				setError(err.reason);
+				console.error(err);
+				setError(err.message); // was err.reason before typscript
 			} else {
 				setRedirect(true);
 			}
@@ -69,7 +70,7 @@ const SignIn = () => {
 					{error === '' ? (
 						''
 					) : (
-						<Alert variant="danger">
+						<Alert variant="danger" className="mt-1">
 							<Alert.Heading>Login was not successful</Alert.Heading>
 							{error}
 						</Alert>

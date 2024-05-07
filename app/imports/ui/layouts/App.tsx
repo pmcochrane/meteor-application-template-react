@@ -18,12 +18,12 @@ import SignIn from '../pages/SignIn';
 import NotAuthorized from '../pages/NotAuthorized';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-/** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
+/** Top-level layout component for this application. Called in imports/startup/client/startup.tsx. */
 const App = () => {
-	const { ready } = useTracker(() => {
-		const rdy = Roles.subscription.ready();
+	const { rolesSubscriptionReady } = useTracker(() => {
+		const rolesSubscriptionReady = Roles.subscription.ready();
 		return {
-			ready: rdy,
+			rolesSubscriptionReady,
 		};
 	});
 	return (
@@ -32,7 +32,7 @@ const App = () => {
 				<div className="d-flex flex-column min-vh-100">
 					<NavBar />
 					<Routes>
-						<Route exact path="/" element={<Landing />} />
+						<Route path="/" element={<Landing />} />
 						<Route path="/signin" element={<SignIn />} />
 						<Route path="/signup" element={<SignUp />} />
 						<Route path="/signout" element={<SignOut />} />
@@ -41,7 +41,7 @@ const App = () => {
 						<Route path="/stuff/list" element={<ProtectedRoute><ListStuff /></ProtectedRoute>} />
 						<Route path="/stuff/add" element={<ProtectedRoute><AddStuff /></ProtectedRoute>} />
 						<Route path="/stuff/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
-						<Route path="/stuff/listadmin" element={<AdminProtectedRoute ready={ready}><ListStuffAdmin /></AdminProtectedRoute>} />
+						<Route path="/stuff/listadmin" element={<AdminProtectedRoute ready={rolesSubscriptionReady!}><ListStuffAdmin /></AdminProtectedRoute>} />
 						
 						<Route path="/notauthorized" element={<NotAuthorized />} />
 						<Route path="*" element={<NotFound />} />
@@ -58,7 +58,7 @@ const App = () => {
  * Checks for Meteor login before routing to the requested page, otherwise goes to signin page.
  * @param {any} { component: Component, ...rest }
  */
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({children}:any) => {
 	const isLogged = Meteor.userId() !== null;
 	return isLogged ? children : <Navigate to="/signin" />;
 };
@@ -68,7 +68,7 @@ const ProtectedRoute = ({ children }) => {
  * Checks for Meteor login and admin role before routing to the requested page, otherwise goes to signin page.
  * @param {any} { component: Component, ...rest }
  */
-const AdminProtectedRoute = ({ ready, children }) => {
+const AdminProtectedRoute = ({ ready, children }:any) => {
 	const isLogged = Meteor.userId() !== null;
 	if (!isLogged) {
 		return <Navigate to="/signin" />;
@@ -76,7 +76,7 @@ const AdminProtectedRoute = ({ ready, children }) => {
 	if (!ready) {
 		return <LoadingSpinner />;
 	}
-	const isAdmin = Roles.userIsInRole(Meteor.userId(), 'admin');
+	const isAdmin = Roles.userIsInRole(Meteor.userId()!, 'admin');
 	return (isLogged && isAdmin) ? children : <Navigate to="/notauthorized" />;
 };
 

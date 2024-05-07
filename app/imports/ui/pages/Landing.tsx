@@ -1,8 +1,8 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Col, Container, Image, Row } from 'react-bootstrap';
-import SignIn from '../pages/SignIn';
+import { Col, Container, Row } from 'react-bootstrap';
+import SignIn from './SignIn';
 
 /* A simple static component to render some text for the landing page. */
 const Landing = () => {

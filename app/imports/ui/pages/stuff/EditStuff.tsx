@@ -9,12 +9,13 @@ import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { useParams } from 'react-router';
 import { Stuffs } from '../../../api/stuff/Stuff';
 import LoadingSpinner from '../../components/LoadingSpinner';
+// import { SwalOptions } from 'sweetalert/typings/modules/options';
 
 const bridge = new SimpleSchema2Bridge(Stuffs.schema);
 
 /* Renders the EditStuff page for editing a single document. */
 const EditStuff = () => {
-	// Get the documentID from the URL field. See imports/ui/layouts/App.jsx for the route containing :_id.
+	// Get the documentID from the URL field. See imports/ui/layouts/App.tsx for the route containing :_id.
 	const { _id } = useParams();
 	// console.log('EditStuff', _id);
 	// useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
@@ -33,10 +34,12 @@ const EditStuff = () => {
 	// console.log('EditStuff', doc, ready);
 	const navigate = useNavigate();
 	// On successful submit, insert the data.
-	const submit = (data) => {
+	const submit = (data: any) => {
 		const { name, quantity, condition } = data;
-		Stuffs.collection.update(_id, { $set: { name, quantity, condition } },
-			(error) => {
+		Stuffs.collection.update(_id!, 
+			{ $set: { name, quantity, condition } },
+			undefined,
+			(error: any) => {
 				if (error) {
 					swal('Error', error.message, 'error');
 				} else {
@@ -51,11 +54,11 @@ const EditStuff = () => {
 			<Row className="justify-content-center">
 				<Col xs={5}>
 					<Col className="text-center"><h2>Edit Stuff</h2></Col>
-					<AutoForm schema={bridge} onSubmit={data => submit(data)} model={doc}>
+					<AutoForm schema={bridge} onSubmit={ (data) => submit(data)} model={doc}>
 						<Card>
 							<Card.Body>
 								<TextField name="name" />
-								<NumField name="quantity" decimal={null} />
+								<NumField name="quantity" decimal={false} />
 								<SelectField name="condition" />
 								<SubmitField value="Submit" />
 								<ErrorsField />

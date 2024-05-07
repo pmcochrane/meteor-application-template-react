@@ -42,11 +42,11 @@
     [
       "meteor/react-meteor-data",
       [
-        "imports/ui/layouts/App.jsx",
-        "imports/ui/pages/ListStuff.jsx",
-        "imports/ui/pages/ListStuffAdmin.jsx",
-        "imports/ui/pages/EditStuff.jsx",
-        "imports/ui/components/NavBar.jsx"
+        "imports/ui/layouts/App.tsx",
+        "imports/ui/pages/ListStuff.tsx",
+        "imports/ui/pages/ListStuffAdmin.tsx",
+        "imports/ui/pages/EditStuff.tsx",
+        "imports/ui/components/NavBar.tsx"
       ]
     ],
     "meteor/tracker",
