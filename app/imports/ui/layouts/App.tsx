@@ -6,10 +6,10 @@ import { Roles } from 'meteor/alanning:roles';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Landing from '../pages/Landing';
-import ListStuff from '../pages/stuff/ListStuff';
-import ListStuffAdmin from '../pages/stuff/ListStuffAdmin';
-import AddStuff from '../pages/stuff/AddStuff';
-import EditStuff from '../pages/stuff/EditStuff';
+import ListDemoItems from '../pages/demoItems/listDemoItems';
+import ListDemoItemsAdmin from '../pages/demoItems/listDemoItemsAdmin';
+import AddDemoItem from '../pages/demoItems/addDemoItem';
+import EditDemoItem from '../pages/demoItems/editDemoItem';
 import NotFound from '../pages/NotFound';
 import SignUp from '../pages/SignUp';
 import SignOut from '../pages/SignOut';
@@ -38,10 +38,11 @@ const App = () => {
 						<Route path="/signout" element={<SignOut />} />
 						
 						<Route path="/home" element={<ProtectedRoute><Landing /></ProtectedRoute>} />
-						<Route path="/stuff/list" element={<ProtectedRoute><ListStuff /></ProtectedRoute>} />
-						<Route path="/stuff/add" element={<ProtectedRoute><AddStuff /></ProtectedRoute>} />
-						<Route path="/stuff/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
-						<Route path="/stuff/listadmin" element={<AdminProtectedRoute ready={rolesSubscriptionReady!}><ListStuffAdmin /></AdminProtectedRoute>} />
+
+						<Route path="/demoItems/list" element={<ProtectedRoute><ListDemoItems /></ProtectedRoute>} />
+						<Route path="/demoItems/listadmin" element={<AdminProtectedRoute ready={rolesSubscriptionReady!}><ListDemoItemsAdmin /></AdminProtectedRoute>} />
+						<Route path="/demoItems/add" element={<ProtectedRoute><AddDemoItem /></ProtectedRoute>} />
+						<Route path="/demoItems/edit/:_id" element={<ProtectedRoute><EditDemoItem /></ProtectedRoute>} />
 						
 						<Route path="/notauthorized" element={<NotAuthorized />} />
 						<Route path="*" element={<NotFound />} />

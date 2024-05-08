@@ -6,7 +6,7 @@ import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-import { Stuffs } from '../../../api/stuff/Stuff';
+import { DemoItems } from '../../../api/DemoItemsCollection';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const formSchema = new SimpleSchema({
@@ -21,15 +21,15 @@ const formSchema = new SimpleSchema({
 
 const bridge = new SimpleSchema2Bridge(formSchema);
 
-/* Renders the AddStuff page for adding a document. */
-const AddStuff = () => {
+/* Renders the AddDemoItem page for adding a document. */
+const AddDemoItem = () => {
 	const navigate = useNavigate();
 	
 	// On submit, insert the data.
 	const submit = (data: any, formRef: any) => {
 		const { name, quantity, condition } = data;
 		const owner = (Meteor.user()?.username) || 'Unknown User';
-		Stuffs.collection.insert(
+		DemoItems.collection.insert(
 			{ name, quantity, condition, owner },
 			(error: any) => {
 				if (error) {
@@ -37,7 +37,7 @@ const AddStuff = () => {
 				} else {
 					swal('Success', 'Item added successfully', 'success');
 					formRef.reset();
-					navigate("/stuff/list");
+					navigate("/demoItems/list");
 				}
 			},
 		);
@@ -49,7 +49,7 @@ const AddStuff = () => {
 		<Container className="py-3">
 			<Row className="justify-content-center">
 				<Col xs={5}>
-					<Col className="text-center"><h2>Add Stuff</h2></Col>
+					<Col className="text-center"><h2>Add DemoItem</h2></Col>
 					<AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => submit(data, fRef)}>
 						<Card>
 							<Card.Body>
@@ -67,4 +67,4 @@ const AddStuff = () => {
 	);
 };
 
-export default AddStuff;
+export default AddDemoItem;

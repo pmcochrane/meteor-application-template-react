@@ -3,31 +3,31 @@ import { Link } from 'react-router-dom';
 import { Card, Col, Container, Row, Table } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Stuffs } from '../../../api/stuff/Stuff';
-import StuffItem from '../../components/StuffItem';
+import { DemoItems } from '../../../api/DemoItemsCollection';
+import DemoItem from './DemoItem';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
-/* Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
-const ListStuff = () => {
+/* Renders a table containing all of the collection documents. Use <DemoItem> to render each row. */
+const ListDemoItems = () => {
 	// useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
-	const { ready, stuffs } = useTracker(() => {
+	const { subscriptionReady, demoItems } = useTracker(() => {
 		// Note that this subscription will get cleaned up
 		// when your component is unmounted or deps change.
-		const subscription = Meteor.subscribe(Stuffs.userPublicationName);	// Get access to Stuff documents.
-		const subscriptionReady = subscription.ready();						// Determine if the subscription is ready
-		const stuffItems = Stuffs.collection.find({}).fetch();				// Get the Stuff documents
+		const subscription = Meteor.subscribe(DemoItems.userPublicationName);	// Get access to collection
+		const subscriptionReady = subscription.ready();							// Determine if the subscription is ready
+		const demoItems = DemoItems.collection.find({}).fetch();				// Get all the documents
 		return {
-			stuffs: stuffItems,
-			ready: subscriptionReady,
+			demoItems,
+			subscriptionReady,
 		};
 	}, []);
-	return (!ready ? <LoadingSpinner /> : (
+	return (!subscriptionReady ? <LoadingSpinner /> : (
 		<Container className="py-3">
 			<Row className="justify-content-center">
 				<Col md={7}>
 					<Card>
 						<Card.Header className="bg-primary text-white">
-							<strong>List Stuff</strong>
+							<strong>List DemoItems</strong>
 						</Card.Header>
 						<Card.Body className="px-0 py-0">
 							<Table striped hover className="mb-0">
@@ -40,12 +40,12 @@ const ListStuff = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{stuffs.map((stuff) => <StuffItem key={stuff._id} stuff={stuff} />)}
+									{demoItems.map((demoItem) => <DemoItem key={demoItem._id} demoItem={demoItem} />)}
 								</tbody>
 							</Table>
 						</Card.Body>
 						<Card.Footer>
-							<Link className="btn btn-primary py-0" to="/stuff/add">Add New Item</Link>
+							<Link className="btn btn-primary py-0" to="/demoItems/add">Add New Item</Link>
 						</Card.Footer>						
 					</Card>
 				</Col>
@@ -54,4 +54,4 @@ const ListStuff = () => {
 	));
 };
 
-export default ListStuff;
+export default ListDemoItems;

@@ -7,36 +7,33 @@ import swal from 'sweetalert';
 import { AutoForm, ErrorsField, HiddenField, NumField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { useParams } from 'react-router';
-import { Stuffs } from '../../../api/stuff/Stuff';
+import { DemoItems } from '../../../api/DemoItemsCollection';
 import LoadingSpinner from '../../components/LoadingSpinner';
 // import { SwalOptions } from 'sweetalert/typings/modules/options';
 
-const bridge = new SimpleSchema2Bridge(Stuffs.schema);
+const bridge = new SimpleSchema2Bridge(DemoItems.schema);
 
-/* Renders the EditStuff page for editing a single document. */
-const EditStuff = () => {
+/* Renders the EditDemoItem page for editing a single document. */
+const EditDemoItem = () => {
 	// Get the documentID from the URL field. See imports/ui/layouts/App.tsx for the route containing :_id.
 	const { _id } = useParams();
-	// console.log('EditStuff', _id);
+	// console.log('EditDemoItem', _id);
 	// useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
-	const { doc, ready } = useTracker(() => {
-		// Get access to Stuff documents.
-		const subscription = Meteor.subscribe(Stuffs.userPublicationName);
-		// Determine if the subscription is ready
-		const rdy = subscription.ready();
-		// Get the document
-		const document = Stuffs.collection.findOne(_id);
+	const { doc, subscriptionReady } = useTracker(() => {
+		const subscription = Meteor.subscribe(DemoItems.userPublicationName);	// Get access to collection documents.
+		const subscriptionReady = subscription.ready();							// Determine if the subscription is ready
+		const document = DemoItems.collection.findOne(_id);						// Get the document
 		return {
 			doc: document,
-			ready: rdy,
+			subscriptionReady,
 		};
 	}, [_id]);
-	// console.log('EditStuff', doc, ready);
+	// console.log('EditDemoItem', doc, subscriptionReady);
 	const navigate = useNavigate();
 	// On successful submit, insert the data.
 	const submit = (data: any) => {
 		const { name, quantity, condition } = data;
-		Stuffs.collection.update(_id!, 
+		DemoItems.collection.update(_id!, 
 			{ $set: { name, quantity, condition } },
 			undefined,
 			(error: any) => {
@@ -44,16 +41,16 @@ const EditStuff = () => {
 					swal('Error', error.message, 'error');
 				} else {
 					swal('Success', 'Item updated successfully', 'success');
-					navigate("/stuff/list");
+					navigate("/demoItems/list");
 				}
 			});
 	};
 
-	return ready ? (
+	return subscriptionReady ? (
 		<Container className="py-3">
 			<Row className="justify-content-center">
 				<Col xs={5}>
-					<Col className="text-center"><h2>Edit Stuff</h2></Col>
+					<Col className="text-center"><h2>Edit DemoItem</h2></Col>
 					<AutoForm schema={bridge} onSubmit={ (data) => submit(data)} model={doc}>
 						<Card>
 							<Card.Body>
@@ -72,4 +69,4 @@ const EditStuff = () => {
 	) : <LoadingSpinner />;
 };
 
-export default EditStuff;
+export default EditDemoItem;

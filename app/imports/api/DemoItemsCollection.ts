@@ -1,10 +1,8 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-/**
- * The StuffsCollection. It encapsulates state and variable values for stuff.
- */
-export interface IStuff {
+// Define the typescript interface for this collection
+export interface IDemoItems {
 	_id: string;
 	name: string;
 	quantity: number;
@@ -12,15 +10,15 @@ export interface IStuff {
 	condition: string;
 }
 
-class StuffsCollection {
+class DemoItemsCollection {
 	name: string;
-	collection: Mongo.Collection<IStuff>;
+	collection: Mongo.Collection<IDemoItems>;
 	schema;
 	userPublicationName: string;
 	adminPublicationName: string;
 
 	constructor() {
-		this.name = 'stuff';								// The name of this collection.
+		this.name = 'demoItems';							// The name of this collection.
 		this.collection = new Mongo.Collection(this.name);	// Define the Mongo collection.
 		this.schema = new SimpleSchema({					// Define the structure of each document in the collection.
 			_id: String,
@@ -41,7 +39,7 @@ class StuffsCollection {
 }
 
 /**
- * The singleton instance of the StuffsCollection.
- * @type {StuffsCollection}
+ * The singleton instance of the DemoItemsCollection.
+ * @type {DemoItemsCollection}
  */
-export const Stuffs: StuffsCollection = new StuffsCollection();
+export const DemoItems: DemoItemsCollection = new DemoItemsCollection();
