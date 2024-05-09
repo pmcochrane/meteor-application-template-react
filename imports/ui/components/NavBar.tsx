@@ -1,16 +1,33 @@
-import React from 'react';
-import { Meteor } from 'meteor/meteor';
-import { useTracker } from 'meteor/react-meteor-data';
-import { NavLink } from 'react-router-dom';
-import { Roles } from 'meteor/alanning:roles';
-import { Nav, Navbar, Row, Col} from 'react-bootstrap';
+import React 											from 'react';
+import { NavLink } 										from 'react-router-dom';
+import { Nav, Navbar, Row, Col} 						from 'react-bootstrap';
 // import { BoxArrowRight, PersonFill, PersonPlusFill } from 'react-bootstrap-icons';
 
+import { Meteor } 										from 'meteor/meteor';
+import { useTracker } 									from 'meteor/react-meteor-data';
+import { Roles } 										from 'meteor/alanning:roles';
+
+import { IColUser } 									from '/imports/startup/server/Accounts';
+
 const NavBar = () => {
+	// const logPrefix="[NavBar]";
 	// useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
-	const { currentUser } = useTracker(() => ({
-		currentUser: Meteor.user() ? Meteor.user()?.username : '',
-	}), []);
+	const { currentUser, fullName } = useTracker(() => {
+		const u=Meteor.user() as IColUser;
+		if (u) {
+			// console.debug(logPrefix, "Logged In User:", u);
+			return {
+				currentUser: Meteor.user() ? (Meteor.user()!.username) : '',
+				fullName:	u.fullName,
+			};
+		} else {
+			// console.debug(logPrefix, "No user is currently signed in");
+			return {
+				currentUser: '',
+				fullName:	'No User is Signed In',
+			}
+		}
+	});
 
 	return (
 		<Navbar className="py-0" bg="light" expand="lg">
@@ -32,14 +49,16 @@ const NavBar = () => {
 						{currentUser === '' ? (
 							<Row className="align-items-center">
 								<Col>
-									<NavLink className="ms-1 btn btn-primary py-0" to="/signin">Sign In</NavLink>
-									<NavLink className="ms-1 btn btn-light py-0" to="/signup">Register New Player</NavLink>
+									<span>{fullName}</span>
+									{/* <NavLink className="ms-1 btn btn-primary py-0" to="/signin">Sign In</NavLink>
+									<NavLink className="ms-1 btn btn-light py-0" to="/signup">Register New Player</NavLink> */}
 								</Col>
 							</Row>
 						) : (
 							<Row className="align-items-center">
 								<Col>
-									<span id="navbar-current-user">{currentUser}</span>
+									<span>{fullName}</span>
+									<span>{currentUser}</span>
 									<NavLink className="ms-1 btn btn-light py-0" to="/signout">Sign Out</NavLink>
 								</Col>
 							</Row>

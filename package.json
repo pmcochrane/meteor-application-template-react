@@ -4,6 +4,7 @@
 	"dependencies": {
 		"@babel/runtime": "7.24.5",
 		"bootstrap": "5.3.3",
+		"check-browser": "^0.1.7",
 		"classnames": "2.5.1",
 		"core-js": "3.36.1",
 		"graphql": "16.8.1",
@@ -43,7 +44,7 @@
 		"typescript": "5.4.5"
 	},
 	"scripts": {
-		"pmc": "meteor --port 8600 --exclude-archs web.browser.legacy,web.cordova --settings config/settings.development.json",
+		"pmc": "meteor --port 8600 --exclude-archs web.browser.legacy,web.cordova --settings server/settings/settings.development.json",
 		"start": "meteor --no-release-check --exclude-archs web.browser.legacy,web.cordova --settings ../config/settings.development.json",
 		"lint": "eslint --quiet --ext .jsx --ext .js ./imports && eslint --quiet --ext .js ./tests",
 		"lint-fix": "eslint --quiet --fix --ext .jsx --ext .js ./imports && eslint --quiet --ext .js ./tests",

@@ -1,7 +1,7 @@
 {
   "defaultAccounts": [
-    { "email": "admin@foo.com", 			"password": "changeme", "role": "admin" },
-    { "email": "paul.m.cochrane@gmail.com", "password": "changeme" }
+    { "email": "admin@foo.com", 			"fullName": "Administrator", "mobileNumber": "00000 000000", "password": "changeme", "role": "admin" },
+    { "email": "paul.m.cochrane@gmail.com", "fullName": "Paul Cochrane", "mobileNumber": "07429 404463", "password": "changeme" }
   ],
 
   "defaultData": [

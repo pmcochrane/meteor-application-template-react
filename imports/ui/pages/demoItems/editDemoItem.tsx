@@ -17,7 +17,7 @@ const bridge = new SimpleSchema2Bridge(DemoItems.schema);
 const EditDemoItem = () => {
 	// Get the documentID from the URL field. See imports/ui/layouts/App.tsx for the route containing :_id.
 	const { _id } = useParams();
-	// console.log('EditDemoItem', _id);
+	// consolelog('EditDemoItem', _id);
 	// useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
 	const { doc, subscriptionReady } = useTracker(() => {
 		const subscription = Meteor.subscribe(DemoItems.userPublicationName);	// Get access to collection documents.
@@ -28,7 +28,7 @@ const EditDemoItem = () => {
 			subscriptionReady,
 		};
 	}, [_id]);
-	// console.log('EditDemoItem', doc, subscriptionReady);
+	// consolelog('EditDemoItem', doc, subscriptionReady);
 	const navigate = useNavigate();
 	// On successful submit, insert the data.
 	const submit = (data: any) => {

@@ -21,21 +21,21 @@ const SignIn = () => {
 
 	// Handle Signin submission using Meteor's account mechanism.
 	const submit = (doc: any) => {
-		// console.log('submit', doc, redirect);
+		// consolelog('submit', doc, redirect);
 		// const { email, password } = doc;
 		Meteor.loginWithPassword(doc.email, doc.password, (err) => {
 			if (err) {
-				console.error(err);
+				consoleerror(err);
 				setError(err.message); // was err.reason before typscript
 			} else {
 				setRedirect(true);
 			}
 		});
-		// console.log('submit2', email, password, error, redirect);
+		// consolelog('submit2', email, password, error, redirect);
 	};
 
 	// Render the signin form.
-	// console.log('render', error, redirect);
+	// consolelog('render', error, redirect);
 	// if correct authentication, redirect to page instead of login screen
 	if (redirect) {
 		return (<Navigate to="/" />);
@@ -44,7 +44,7 @@ const SignIn = () => {
 	return (
 		<Container id="signin-page" className="py-3">
 			<Row className="justify-content-center">
-				<Col xs={5}>
+				<Col>
 					<AutoForm schema={bridge} onSubmit={data => submit(data)}>
 						<Card>
 							<Card.Header className="bg-primary text-white">
@@ -61,7 +61,7 @@ const SignIn = () => {
 										<Link to="/signup">Click here to Register New User</Link>
 									</Col>
 									<Col className="col-auto">
-										<SubmitField id="signin-form-submit" />
+										<SubmitField id="signin-form-submit" inputClassName="btn btn-primary"/>
 									</Col>
 								</Row>
 							</Card.Footer>
