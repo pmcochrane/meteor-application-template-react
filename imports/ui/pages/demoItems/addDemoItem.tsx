@@ -1,12 +1,18 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, Col, Container, Row } from 'react-bootstrap';
-import { AutoForm, ErrorsField, NumField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
-import Swal from 'sweetalert2';
-import { Meteor } from 'meteor/meteor';
-import SimpleSchema from 'simpl-schema';
-import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-import { DemoItems } from '../../../api/DemoItemsCollection';
+import React 														from 'react';
+import { useNavigate } 												from 'react-router-dom';
+import { Card, Col, Container, Row } 								from 'react-bootstrap';
+import { motion }													from 'framer-motion';
+
+import Swal 														from 'sweetalert2';
+import { AutoForm, ErrorsField, NumField, SelectField, SubmitField, TextField } 
+																	from 'uniforms-bootstrap5';
+
+import { Meteor } 													from 'meteor/meteor';
+import SimpleSchema 												from 'simpl-schema';
+import SimpleSchema2Bridge 											from 'uniforms-bridge-simple-schema-2';
+
+import { DemoItems } 												from '../../../api/DemoItemsCollection';
+import { pageTransition } 											from '../../components/AnimatedRoutes';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const formSchema = new SimpleSchema({
@@ -46,24 +52,26 @@ const AddDemoItem = () => {
 	// Render the form. Use Uniforms: https://github.com/vazco/uniforms
 	let fRef: any = null;
 	return (
-		<Container className="py-3">
-			<Row className="justify-content-center">
-				<Col xs={5}>
-					<Col className="text-center"><h2>Add DemoItem</h2></Col>
-					<AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => submit(data, fRef)}>
-						<Card>
-							<Card.Body>
-								<TextField name="name" />
-								<NumField name="quantity" decimal={false} />
-								<SelectField name="condition" />
-								<SubmitField value="Submit" />
-								<ErrorsField />
-							</Card.Body>
-						</Card>
-					</AutoForm>
-				</Col>
-			</Row>
-		</Container>
+		<motion.div initial={pageTransition.initial} animate={pageTransition.animate} exit={pageTransition.exit}>
+			<Container className="py-3">
+				<Row className="justify-content-center">
+					<Col xs={5}>
+						<Col className="text-center"><h2>Add DemoItem</h2></Col>
+						<AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => submit(data, fRef)}>
+							<Card>
+								<Card.Body>
+									<TextField name="name" />
+									<NumField name="quantity" decimal={false} />
+									<SelectField name="condition" />
+									<SubmitField value="Submit" />
+									<ErrorsField />
+								</Card.Body>
+							</Card>
+						</AutoForm>
+					</Col>
+				</Row>
+			</Container>
+		</motion.div>
 	);
 };
 

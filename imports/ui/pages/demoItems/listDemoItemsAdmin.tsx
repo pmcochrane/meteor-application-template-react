@@ -1,12 +1,16 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Card, Col, Container, Row, Table } from 'react-bootstrap';
-import { Meteor } from 'meteor/meteor';
-import { useTracker } from 'meteor/react-meteor-data';
-import { DemoItems } from '../../../api/DemoItemsCollection';
-import DemoItemAdmin from './DemoItemAdmin';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import { PlusCircleFill } from 'react-bootstrap-icons';
+import React 														from 'react';
+import { Link } 													from 'react-router-dom';
+import { Card, Col, Container, Row, Table } 						from 'react-bootstrap';
+import { PlusCircleFill } 											from 'react-bootstrap-icons';
+import { motion }													from 'framer-motion';
+
+import { Meteor } 													from 'meteor/meteor';
+import { useTracker } 												from 'meteor/react-meteor-data';
+
+import DemoItemAdmin 												from './DemoItemAdmin';
+import { DemoItems } 												from '../../../api/DemoItemsCollection';
+import { pageTransition } 											from '../../components/AnimatedRoutes';
+import LoadingSpinner 												from '../../components/LoadingSpinner';
 
 /* Renders a table containing all of the collection documents. Use <DemoItemAdmin> to render each row. */
 const ListDemoItemsAdmin = () => {
@@ -20,38 +24,44 @@ const ListDemoItemsAdmin = () => {
 			subscriptionReady,
 		};
 	}, []);
-	return (subscriptionReady ? (
-		<Container className="py-3">
-			<Row className="justify-content-center">
-				<Col md={7}>
-					<Card>
-						<Card.Header className="text-bg-warning text-black">
-							<strong>List DemoItems (admin)</strong>
-						</Card.Header>
-						<Card.Body className="px-0 py-0">
-							<Table striped hover className="mb-0">
-								<thead>
-									<tr>
-										<th>Name</th>
-										<th>Quantity</th>
-										<th>Condition</th>
-										<th>Owner</th>
-										<th>Edit</th>
-									</tr>
-								</thead>
-								<tbody>
-									{demoItems.map((demoItem) => <DemoItemAdmin key={demoItem._id} demoItem={demoItem} />)}
-								</tbody>
-							</Table>
-						</Card.Body>
-						<Card.Footer className="text-bg-warning-subtle bg-warning-subtle">
-							<Link to="/demoItems/add" className="btn btn-warning px-2 py-1"><div className="d-flex align-items-center"><PlusCircleFill/>&nbsp;Add New Item</div></Link>
-						</Card.Footer>
-					</Card>
-				</Col>
-			</Row>
-		</Container>
-	) : <LoadingSpinner />);
+	return (
+		<motion.div initial={pageTransition.initial} animate={pageTransition.animate} exit={pageTransition.exit}>
+		{ subscriptionReady ? (
+			<Container className="py-3">
+				<Row className="justify-content-center">
+					<Col md={7}>
+						<Card>
+							<Card.Header className="text-bg-warning text-black">
+								<strong>List DemoItems (admin)</strong>
+							</Card.Header>
+							<Card.Body className="px-0 py-0">
+								<Table striped hover className="mb-0">
+									<thead>
+										<tr>
+											<th>Name</th>
+											<th>Quantity</th>
+											<th>Condition</th>
+											<th>Owner</th>
+											<th>Edit</th>
+										</tr>
+									</thead>
+									<tbody>
+										{demoItems.map((demoItem) => <DemoItemAdmin key={demoItem._id} demoItem={demoItem} />)}
+									</tbody>
+								</Table>
+							</Card.Body>
+							<Card.Footer className="text-bg-warning-subtle bg-warning-subtle">
+								<Link to="/demoItems/add" className="btn btn-warning px-2 py-1"><div className="d-flex align-items-center"><PlusCircleFill/>&nbsp;Add New Item</div></Link>
+							</Card.Footer>
+						</Card>
+					</Col>
+				</Row>
+			</Container>
+		) : (
+			<LoadingSpinner />
+		)}
+		</motion.div>
+	);
 };
 
 export default ListDemoItemsAdmin;

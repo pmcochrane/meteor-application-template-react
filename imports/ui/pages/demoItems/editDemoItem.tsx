@@ -1,15 +1,20 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, Col, Container, Row } from 'react-bootstrap';
-import { Meteor } from 'meteor/meteor';
-import { useTracker } from 'meteor/react-meteor-data';
-import Swal from 'sweetalert2';
-import { AutoForm, ErrorsField, HiddenField, NumField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
-import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-import { useParams } from 'react-router';
-import { DemoItems } from '../../../api/DemoItemsCollection';
-import LoadingSpinner from '../../components/LoadingSpinner';
-// import { SwalOptions } from 'sweetalert/typings/modules/options';
+import React 														from 'react';
+import { useParams } 												from 'react-router';
+import { useNavigate } 												from 'react-router-dom';
+import { Card, Col, Container, Row } 								from 'react-bootstrap';
+import { motion }													from 'framer-motion';
+
+import Swal 														from 'sweetalert2';
+import { AutoForm, ErrorsField, HiddenField, NumField, SelectField, SubmitField, TextField } 
+																	from 'uniforms-bootstrap5';
+
+import { Meteor } 													from 'meteor/meteor';
+import { useTracker } 												from 'meteor/react-meteor-data';
+import SimpleSchema2Bridge 											from 'uniforms-bridge-simple-schema-2';
+
+import { DemoItems } 												from '../../../api/DemoItemsCollection';
+import { pageTransition } 											from '../../components/AnimatedRoutes';
+import LoadingSpinner 												from '../../components/LoadingSpinner';
 
 const bridge = new SimpleSchema2Bridge(DemoItems.schema);
 
@@ -46,27 +51,33 @@ const EditDemoItem = () => {
 			});
 	};
 
-	return subscriptionReady ? (
-		<Container className="py-3">
-			<Row className="justify-content-center">
-				<Col xs={5}>
-					<Col className="text-center"><h2>Edit DemoItem</h2></Col>
-					<AutoForm schema={bridge} onSubmit={ (data) => submit(data)} model={doc}>
-						<Card>
-							<Card.Body>
-								<TextField name="name" />
-								<NumField name="quantity" decimal={false} />
-								<SelectField name="condition" />
-								<SubmitField value="Submit" />
-								<ErrorsField />
-								<HiddenField name="owner" />
-							</Card.Body>
-						</Card>
-					</AutoForm>
-				</Col>
-			</Row>
-		</Container>
-	) : <LoadingSpinner />;
+	return (
+		<motion.div initial={pageTransition.initial} animate={pageTransition.animate} exit={pageTransition.exit}>
+		{ subscriptionReady ? (
+			<Container className="py-3">
+				<Row className="justify-content-center">
+					<Col xs={5}>
+						<Col className="text-center"><h2>Edit DemoItem</h2></Col>
+						<AutoForm schema={bridge} onSubmit={ (data) => submit(data)} model={doc}>
+							<Card>
+								<Card.Body>
+									<TextField name="name" />
+									<NumField name="quantity" decimal={false} />
+									<SelectField name="condition" />
+									<SubmitField value="Submit" />
+									<ErrorsField />
+									<HiddenField name="owner" />
+								</Card.Body>
+							</Card>
+						</AutoForm>
+					</Col>
+				</Row>
+			</Container>
+		) : (
+			<LoadingSpinner />
+		)}
+		</motion.div>
+	);
 };
 
 export default EditDemoItem;

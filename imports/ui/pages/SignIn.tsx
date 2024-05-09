@@ -2,11 +2,14 @@ import React, { useState } 											from 'react';
 import { Link, Navigate } 											from 'react-router-dom';
 import { Alert, Card, Col, Container, Row } 						from 'react-bootstrap';
 import { BoxArrowInRight, CheckCircleFill } 						from 'react-bootstrap-icons';
+import { motion } 													from 'framer-motion';
 import SimpleSchema2Bridge 											from 'uniforms-bridge-simple-schema-2';
 import { AutoForm, ErrorsField, TextField }							from 'uniforms-bootstrap5';
 
 import { Meteor } 													from 'meteor/meteor';
 import SimpleSchema 												from 'simpl-schema';
+
+import { pageTransition } 											from '../components/AnimatedRoutes';
 
 /**
  * Signin page overrides the form’s submit event and call Meteor’s loginWithPassword().
@@ -44,42 +47,44 @@ const SignIn = () => {
 	}
 	// Otherwise return the Login form.
 	return (
-		<Container id="signin-page" className="py-3">
-			<Row className="justify-content-center">
-				<Col>
-					<AutoForm schema={bridge} onSubmit={data => submit(data)}>
-						<Card>
-							<Card.Header className="bg-primary-subtle text-primary">
-								<strong>Sign in to your account</strong>
-							</Card.Header>
-							<Card.Body>
-								<TextField id="signin-form-email" name="email" placeholder="E-mail address" />
-								<TextField id="signin-form-password" name="password" placeholder="Password" type="password" />
-								<ErrorsField />
-							</Card.Body>
-							<Card.Footer className="bg-primary-subtle text-primary">
-								<Row className="align-items-center">
-									<Col>
-										<button type="submit" className="btn btn-primary d-flex align-items-center"><CheckCircleFill/>&nbsp;Sign In</button>
-									</Col>
-									<Col className="col-auto">
-										<Link to="/signup" className="btn btn-success d-flex align-items-center"><BoxArrowInRight/>&nbsp;Switch to Register New User Page</Link>
-									</Col>
-								</Row>
-							</Card.Footer>
-						</Card>
-					</AutoForm>
-					{error === '' ? (
-						''
-					) : (
-						<Alert variant="danger" className="mt-1">
-							<Alert.Heading>Login was not successful</Alert.Heading>
-							{error}
-						</Alert>
-					)}
-				</Col>
-			</Row>
-		</Container>
+		<motion.div initial={pageTransition.initial} animate={pageTransition.animate} exit={pageTransition.exit}>
+			<Container id="signin-page" className="py-3">
+				<Row className="justify-content-center">
+					<Col>
+						<AutoForm schema={bridge} onSubmit={data => submit(data)}>
+							<Card>
+								<Card.Header className="bg-primary-subtle text-primary">
+									<strong>Sign in to your account</strong>
+								</Card.Header>
+								<Card.Body>
+									<TextField id="signin-form-email" name="email" placeholder="E-mail address" />
+									<TextField id="signin-form-password" name="password" placeholder="Password" type="password" />
+									<ErrorsField />
+								</Card.Body>
+								<Card.Footer className="bg-primary-subtle text-primary">
+									<Row className="align-items-center">
+										<Col>
+											<button type="submit" className="btn btn-primary d-flex align-items-center"><CheckCircleFill/>&nbsp;Sign In</button>
+										</Col>
+										<Col className="col-auto">
+											<Link to="/signup" className="btn btn-success d-flex align-items-center"><BoxArrowInRight/>&nbsp;Switch to Register New User Page</Link>
+										</Col>
+									</Row>
+								</Card.Footer>
+							</Card>
+						</AutoForm>
+						{error === '' ? (
+							''
+						) : (
+							<Alert variant="danger" className="mt-1">
+								<Alert.Heading>Login was not successful</Alert.Heading>
+								{error}
+							</Alert>
+						)}
+					</Col>
+				</Row>
+			</Container>
+		</motion.div>
 	);
 };
 
