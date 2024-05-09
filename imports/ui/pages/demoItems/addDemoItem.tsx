@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { AutoForm, ErrorsField, NumField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
@@ -33,9 +33,9 @@ const AddDemoItem = () => {
 			{ name, quantity, condition, owner },
 			(error: any) => {
 				if (error) {
-					swal('Error', error.message, 'error');
+					Swal.fire({title: 'Error', html: error.message, icon: 'error', customClass: 'text-bg-danger', toast: true, position: 'top-end', timer: 5000, showConfirmButton: false, showCloseButton: true});
 				} else {
-					swal('Success', 'Item added successfully', 'success');
+					Swal.fire({html: quantity+" of "+name+' added.', icon: 'success', customClass: 'text-bg-success', toast: true, position: 'top-end', timer: 5000, showConfirmButton: false, showCloseButton: true });
 					formRef.reset();
 					navigate("/demoItems/list");
 				}

@@ -8,6 +8,7 @@ import { useTracker } 									from 'meteor/react-meteor-data';
 import { Roles } 										from 'meteor/alanning:roles';
 
 import { IColUser } 									from '/imports/startup/server/Accounts';
+import { XOctagonFill } from 'react-bootstrap-icons';
 
 const NavBar = () => {
 	// const logPrefix="[NavBar]";
@@ -59,7 +60,7 @@ const NavBar = () => {
 								<Col>
 									<span>{fullName}</span>
 									<span>{currentUser}</span>
-									<NavLink className="ms-1 btn btn-light py-0" to="/signout">Sign Out</NavLink>
+									<NavLink className="ms-1 btn btn-secondary px-2 py-1" to="/signout"><div className="d-flex align-items-center"><XOctagonFill/>&nbsp;Sign Out</div></NavLink>
 								</Col>
 							</Row>
 						)}

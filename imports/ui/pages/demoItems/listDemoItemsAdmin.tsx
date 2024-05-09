@@ -6,6 +6,7 @@ import { useTracker } from 'meteor/react-meteor-data';
 import { DemoItems } from '../../../api/DemoItemsCollection';
 import DemoItemAdmin from './DemoItemAdmin';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import { PlusCircleFill } from 'react-bootstrap-icons';
 
 /* Renders a table containing all of the collection documents. Use <DemoItemAdmin> to render each row. */
 const ListDemoItemsAdmin = () => {
@@ -24,7 +25,7 @@ const ListDemoItemsAdmin = () => {
 			<Row className="justify-content-center">
 				<Col md={7}>
 					<Card>
-						<Card.Header className="bg-warning text-black">
+						<Card.Header className="text-bg-warning text-black">
 							<strong>List DemoItems (admin)</strong>
 						</Card.Header>
 						<Card.Body className="px-0 py-0">
@@ -43,8 +44,8 @@ const ListDemoItemsAdmin = () => {
 								</tbody>
 							</Table>
 						</Card.Body>
-						<Card.Footer>
-							<Link className="btn btn-primary py-0" to="/demoItems/add">Add New Item</Link>
+						<Card.Footer className="text-bg-warning-subtle bg-warning-subtle">
+							<Link to="/demoItems/add" className="btn btn-warning px-2 py-1"><div className="d-flex align-items-center"><PlusCircleFill/>&nbsp;Add New Item</div></Link>
 						</Card.Footer>
 					</Card>
 				</Col>

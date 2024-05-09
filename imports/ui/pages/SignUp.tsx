@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Link, Navigate } from 'react-router-dom';
-import { Accounts } from 'meteor/accounts-base';
-import { Alert, Card, Col, Container, Row } from 'react-bootstrap';
-import SimpleSchema from 'simpl-schema';
-import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
+import React, { useState } 											from 'react';
+import PropTypes 													from 'prop-types';
+import { Link, Navigate } 											from 'react-router-dom';
+import { Alert, Card, Col, Container, Row } 						from 'react-bootstrap';
+import { BoxArrowInRight, PlusCircleFill } 							from 'react-bootstrap-icons';
+import SimpleSchema2Bridge 											from 'uniforms-bridge-simple-schema-2';
+import { AutoForm, ErrorsField, TextField }							from 'uniforms-bootstrap5';
+
+import { Accounts } 												from 'meteor/accounts-base';
+import SimpleSchema 												from 'simpl-schema';
 
 /**
  * SignUp component is similar to signin component, but we create a new user instead.
@@ -47,7 +49,7 @@ const SignUp = ({ location }: any) => {
 				<Col>
 					<AutoForm schema={bridge} onSubmit={data => submit(data)}>
 						<Card>
-							<Card.Header className="bg-success text-white">
+							<Card.Header className="bg-success-subtle text-success">
 								<strong>Register New Account</strong>
 							</Card.Header>
 							
@@ -58,13 +60,13 @@ const SignUp = ({ location }: any) => {
 								<TextField name="mobilenumber" label="Mobile Number"  placeholder="Enter your Mobile Number to contact you" />
 								<ErrorsField />
 							</Card.Body>
-							<Card.Footer>
+							<Card.Footer className="bg-success-subtle text-success">
 								<Row className="align-items-center">
 									<Col>
-										<Link to="/signin">Click here to sign in as an existing user</Link>
+										<button type="submit" className="btn btn-success d-flex align-items-center"><PlusCircleFill/>&nbsp;Register New User</button>
 									</Col>
 									<Col className="col-auto">
-										<SubmitField id="signin-form-submit" inputClassName="btn btn-success"/>
+										<Link to="/signin" className="btn btn-primary d-flex align-items-center"><BoxArrowInRight/>&nbsp;Switch to Sign in as an Existing User</Link>
 									</Col>
 								</Row>
 							</Card.Footer>

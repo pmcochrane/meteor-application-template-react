@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
-import { Meteor } from 'meteor/meteor';
-import { Alert, Card, Col, Container, Row } from 'react-bootstrap';
-import SimpleSchema from 'simpl-schema';
-import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
+import React, { useState } 											from 'react';
+import { Link, Navigate } 											from 'react-router-dom';
+import { Alert, Card, Col, Container, Row } 						from 'react-bootstrap';
+import { BoxArrowInRight, CheckCircleFill } 						from 'react-bootstrap-icons';
+import SimpleSchema2Bridge 											from 'uniforms-bridge-simple-schema-2';
+import { AutoForm, ErrorsField, TextField }							from 'uniforms-bootstrap5';
+
+import { Meteor } 													from 'meteor/meteor';
+import SimpleSchema 												from 'simpl-schema';
 
 /**
  * Signin page overrides the form’s submit event and call Meteor’s loginWithPassword().
@@ -47,7 +49,7 @@ const SignIn = () => {
 				<Col>
 					<AutoForm schema={bridge} onSubmit={data => submit(data)}>
 						<Card>
-							<Card.Header className="bg-primary text-white">
+							<Card.Header className="bg-primary-subtle text-primary">
 								<strong>Sign in to your account</strong>
 							</Card.Header>
 							<Card.Body>
@@ -55,13 +57,13 @@ const SignIn = () => {
 								<TextField id="signin-form-password" name="password" placeholder="Password" type="password" />
 								<ErrorsField />
 							</Card.Body>
-							<Card.Footer>
+							<Card.Footer className="bg-primary-subtle text-primary">
 								<Row className="align-items-center">
 									<Col>
-										<Link to="/signup">Click here to Register New User</Link>
+										<button type="submit" className="btn btn-primary d-flex align-items-center"><CheckCircleFill/>&nbsp;Sign In</button>
 									</Col>
 									<Col className="col-auto">
-										<SubmitField id="signin-form-submit" inputClassName="btn btn-primary"/>
+										<Link to="/signup" className="btn btn-success d-flex align-items-center"><BoxArrowInRight/>&nbsp;Switch to Register New User Page</Link>
 									</Col>
 								</Row>
 							</Card.Footer>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AutoForm, ErrorsField, HiddenField, NumField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { useParams } from 'react-router';
@@ -38,9 +38,9 @@ const EditDemoItem = () => {
 			undefined,
 			(error: any) => {
 				if (error) {
-					swal('Error', error.message, 'error');
+					Swal.fire({title: 'Error', html: error.message, icon: 'error', customClass: 'text-bg-danger', toast: true, position: 'top-end', timer: 5000, showConfirmButton: false, showCloseButton: true});
 				} else {
-					swal('Success', 'Item updated successfully', 'success');
+					Swal.fire({html: quantity+" of "+name+' updated.', icon: 'success', customClass: 'text-bg-success', toast: true, position: 'top-end', timer: 5000, showConfirmButton: false, showCloseButton: true });
 					navigate("/demoItems/list");
 				}
 			});
