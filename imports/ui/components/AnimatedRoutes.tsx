@@ -1,7 +1,7 @@
-import React 														from 'react';
-import { Route, Routes, Navigate, useLocation  } 					from 'react-router-dom';
+import React, { useState, useEffect }								from 'react';
+import { Route, Routes, Navigate, useLocation }						from 'react-router-dom';
 import PropTypes 													from 'prop-types';
-import { AnimatePresence }											from 'framer-motion';
+import { AnimatePresence, Variants }								from 'framer-motion';
 
 import { useTracker } 												from 'meteor/react-meteor-data';
 import { Roles } 													from 'meteor/alanning:roles';
@@ -20,23 +20,34 @@ import ListDemoItemsAdmin 											from '../pages/demoItems/listDemoItemsAdmin
 import AddDemoItem 													from '../pages/demoItems/addDemoItem';
 import EditDemoItem 												from '../pages/demoItems/editDemoItem';
 
-export const pageTransition = {
-	initial: {
+export const animationVariants: Variants = {
+	pageEnter: {
 		transform: 'translateY(0%) scale(1)', 
 		opacity: 0,
+		transition: { duration: 0, delay: 0 },
 	},
-	animate: {
+	pageAnimate: {
 		transform: 'translateY(0%) scale(1)',
 		opacity: 1, 
+		transition: { duration: 0.750, delay: 0 },
 	},
-	exit: {
+	pageLeave: {
 		transform: 'translateY(20%) scale(0.75)', 
 		opacity: 0,
+		transition: { duration: 0.750, delay: 0 },
+		position: 'fixed', 
+		// top: '40px', 	// Navbar Height
+		width: '100%',
 	},
 }
 
 const AnimatedRoutes = () => {
+	const [routeKey, setRouteKey] = useState(Math.random().toString(36).slice(2, 7));
 	const location = useLocation();
+	const logPrefix="[AnimatedRoutes]";
+	const [lastLocationPathName, setLastLocationPathName] = useState("fhjdashfjsadhfjasdhf");
+	
+	// useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
 	const { rolesSubscriptionReady } = useTracker(() => {
 		const rolesSubscriptionReady = Roles.subscription.ready();
 		return {
@@ -44,23 +55,33 @@ const AnimatedRoutes = () => {
 			location,
 		};
 	});
-	return (
-		<AnimatePresence mode="wait">
-			<Routes location={location} key={location.pathname}>
-				<Route path="/" element={<Landing />} />
-				<Route path="/signin" element={<SignIn />} />
-				<Route path="/signup" element={<SignUp />} />
-				<Route path="/signout" element={<SignOut />} />
-				
-				<Route path="/home" element={<ProtectedRoute><Landing /></ProtectedRoute>} />
+	useEffect(() => {
+		if (location.pathname!==lastLocationPathName) {
+			consoledebug(logPrefix, "Generate new unique route key for url:", location.pathname);
+			setRouteKey(Math.random().toString(36).slice(2, 7));
+			setLastLocationPathName(location.pathname);
+		} else {
+			consoledebug(logPrefix, "No Location change deteced:", location.pathname);
+		}
+	  }, [location]);
 
-				<Route path="/demoItems/list" element={<ProtectedRoute><ListDemoItems /></ProtectedRoute>} />
-				<Route path="/demoItems/listadmin" element={<AdminProtectedRoute ready={rolesSubscriptionReady!}><ListDemoItemsAdmin /></AdminProtectedRoute>} />
-				<Route path="/demoItems/add" element={<ProtectedRoute><AddDemoItem /></ProtectedRoute>} />
-				<Route path="/demoItems/edit/:_id" element={<ProtectedRoute><EditDemoItem /></ProtectedRoute>} />
+	return (
+		<AnimatePresence initial={false}>
+			<Routes location={location} key={`${location.pathname}-${routeKey}`}>
+				<Route path="/"						element={<Landing />} />
+				<Route path="/signin"				element={<SignIn />} />
+				<Route path="/signup"				element={<SignUp />} />
+				<Route path="/signout"				element={<SignOut />} />
 				
-				<Route path="/notauthorized" element={<NotAuthorized />} />
-				<Route path="*" element={<NotFound />} />
+				<Route path="/home"					element={<ProtectedRoute><Landing /></ProtectedRoute>} />
+
+				<Route path="/demoItems/list"		element={<ProtectedRoute><ListDemoItems /></ProtectedRoute>} />
+				<Route path="/demoItems/listadmin"	element={<AdminProtectedRoute ready={rolesSubscriptionReady!}><ListDemoItemsAdmin /></AdminProtectedRoute>} />
+				<Route path="/demoItems/add"		element={<ProtectedRoute><AddDemoItem /></ProtectedRoute>} />
+				<Route path="/demoItems/edit/:_id"	element={<ProtectedRoute><EditDemoItem /></ProtectedRoute>} />
+				
+				<Route path="/notauthorized"		element={<NotAuthorized />} />
+				<Route path="*"						element={<NotFound />} />
 			</Routes>
 		</AnimatePresence>
 	);

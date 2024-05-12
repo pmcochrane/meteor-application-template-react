@@ -1,15 +1,19 @@
-import React 														from 'react';
+import React, { useEffect } 										from 'react';
 import { Link } 													from 'react-router-dom';
 import { Col, Container, Row } 										from 'react-bootstrap';
-import { motion }													from 'framer-motion';
+import { motion, usePresence }										from 'framer-motion';
 
 import { Meteor } 													from 'meteor/meteor';
 import { useTracker } 												from 'meteor/react-meteor-data';
 
-import { pageTransition } 											from '../components/AnimatedRoutes';
+import { animationVariants } 										from '../components/AnimatedRoutes';
 
 /* A simple static component to render some text for the landing page. */
 const Landing = () => {
+	// This is a hack to ensure that component is removed from DOM if animation does not exit properly
+	const [isPresent, safeToRemove] = usePresence();
+	useEffect(() => { !isPresent && setTimeout(safeToRemove, 800); }, [isPresent]);
+
 	// useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
 	const { isLogged } = useTracker(() => {
 		return {
@@ -17,7 +21,7 @@ const Landing = () => {
 		};
 	}, []);
 	return (
-		<motion.div initial={pageTransition.initial} animate={pageTransition.animate} exit={pageTransition.exit}>
+		<motion.div variants={animationVariants} initial="pageEnter" animate="pageAnimate" exit="pageLeave" layout>
 		{isLogged ? (
 			// Display the Home page as user is currently signed in
 			<Container id="landing-page-signed-in" fluid className="py-3">		

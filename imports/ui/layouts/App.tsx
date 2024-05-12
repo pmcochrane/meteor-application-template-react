@@ -10,9 +10,11 @@ const App = () => {
 	return (
 		<Router>
 			<div className="container-fluid px-0">
-				<div className="d-flex flex-column min-vh-100">
+				<div className="d-flex flex-column min-vh-100 position-relative">
 					<NavBar />
-					<AnimatedRoutes />
+					<div className="position-relative">
+						<AnimatedRoutes />
+					</div>
 					<Footer />
 				</div>
 			</div>

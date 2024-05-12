@@ -26,3 +26,7 @@ body {
   padding-top: 10px;
   padding-bottom: 20px;
 }
+
+body {
+	overflow-y: scroll; /* Show vertical scrollbar */
+}

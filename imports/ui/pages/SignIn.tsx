@@ -1,21 +1,25 @@
-import React, { useState } 											from 'react';
+import React, { useState, useEffect } 								from 'react';
 import { Link, Navigate } 											from 'react-router-dom';
 import { Alert, Card, Col, Container, Row } 						from 'react-bootstrap';
 import { BoxArrowInRight, CheckCircleFill } 						from 'react-bootstrap-icons';
-import { motion } 													from 'framer-motion';
+import { motion, usePresence }										from 'framer-motion';
 import SimpleSchema2Bridge 											from 'uniforms-bridge-simple-schema-2';
 import { AutoForm, ErrorsField, TextField }							from 'uniforms-bootstrap5';
 
 import { Meteor } 													from 'meteor/meteor';
 import SimpleSchema 												from 'simpl-schema';
 
-import { pageTransition } 											from '../components/AnimatedRoutes';
+import { animationVariants } 										from '../components/AnimatedRoutes';
 
 /**
  * Signin page overrides the form’s submit event and call Meteor’s loginWithPassword().
  * Authentication errors modify the component’s state to be displayed
  */
 const SignIn = () => {
+	// This is a hack to ensure that component is removed from DOM if animation does not exit properly
+	const [isPresent, safeToRemove] = usePresence();
+	useEffect(() => { !isPresent && setTimeout(safeToRemove, 800); }, [isPresent]);
+
 	const [error, setError] = useState('');
 	const [redirect, setRedirect] = useState(false);
 	const schema = new SimpleSchema({
@@ -47,7 +51,7 @@ const SignIn = () => {
 	}
 	// Otherwise return the Login form.
 	return (
-		<motion.div initial={pageTransition.initial} animate={pageTransition.animate} exit={pageTransition.exit}>
+		<motion.div variants={animationVariants} initial="pageEnter" animate="pageAnimate" exit="pageLeave" layout>
 			<Container id="signin-page" className="py-3">
 				<Row className="justify-content-center">
 					<Col>
@@ -57,8 +61,8 @@ const SignIn = () => {
 									<strong>Sign in to your account</strong>
 								</Card.Header>
 								<Card.Body>
-									<TextField id="signin-form-email" name="email" placeholder="E-mail address" />
-									<TextField id="signin-form-password" name="password" placeholder="Password" type="password" />
+									<TextField id="signin-form-email" name="email" placeholder="E-mail address" autoComplete="username"/>
+									<TextField id="signin-form-password" name="password" placeholder="Password" type="password" autoComplete="current-password"/>
 									<ErrorsField />
 								</Card.Body>
 								<Card.Footer className="bg-primary-subtle text-primary">

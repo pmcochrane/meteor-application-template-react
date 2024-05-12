@@ -1,8 +1,8 @@
-import React 														from 'react';
+import React, { useEffect } 										from 'react';
 import { useParams } 												from 'react-router';
 import { useNavigate } 												from 'react-router-dom';
 import { Card, Col, Container, Row } 								from 'react-bootstrap';
-import { motion }													from 'framer-motion';
+import { motion, usePresence }										from 'framer-motion';
 
 import Swal 														from 'sweetalert2';
 import { AutoForm, ErrorsField, HiddenField, NumField, SelectField, SubmitField, TextField } 
@@ -13,13 +13,17 @@ import { useTracker } 												from 'meteor/react-meteor-data';
 import SimpleSchema2Bridge 											from 'uniforms-bridge-simple-schema-2';
 
 import { DemoItems } 												from '../../../api/DemoItemsCollection';
-import { pageTransition } 											from '../../components/AnimatedRoutes';
+import { animationVariants } 										from '../../components/AnimatedRoutes';
 import LoadingSpinner 												from '../../components/LoadingSpinner';
 
 const bridge = new SimpleSchema2Bridge(DemoItems.schema);
 
 /* Renders the EditDemoItem page for editing a single document. */
 const EditDemoItem = () => {
+	// This is a hack to ensure that component is removed from DOM if animation does not exit properly
+	const [isPresent, safeToRemove] = usePresence();
+	useEffect(() => { !isPresent && setTimeout(safeToRemove, 800); }, [isPresent]);
+
 	// Get the documentID from the URL field. See imports/ui/layouts/App.tsx for the route containing :_id.
 	const { _id } = useParams();
 	// consolelog('EditDemoItem', _id);
@@ -52,7 +56,7 @@ const EditDemoItem = () => {
 	};
 
 	return (
-		<motion.div initial={pageTransition.initial} animate={pageTransition.animate} exit={pageTransition.exit}>
+		<motion.div variants={animationVariants} initial="pageEnter" animate="pageAnimate" exit="pageLeave" layout>
 		{ subscriptionReady ? (
 			<Container className="py-3">
 				<Row className="justify-content-center">

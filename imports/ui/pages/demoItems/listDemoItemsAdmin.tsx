@@ -1,4 +1,4 @@
-import React 														from 'react';
+import React, { } 												from 'react';
 import { Link } 													from 'react-router-dom';
 import { Card, Col, Container, Row, Table } 						from 'react-bootstrap';
 import { PlusCircleFill } 											from 'react-bootstrap-icons';
@@ -9,11 +9,15 @@ import { useTracker } 												from 'meteor/react-meteor-data';
 
 import DemoItemAdmin 												from './DemoItemAdmin';
 import { DemoItems } 												from '../../../api/DemoItemsCollection';
-import { pageTransition } 											from '../../components/AnimatedRoutes';
+import { animationVariants } 										from '../../components/AnimatedRoutes';
 import LoadingSpinner 												from '../../components/LoadingSpinner';
 
 /* Renders a table containing all of the collection documents. Use <DemoItemAdmin> to render each row. */
 const ListDemoItemsAdmin = () => {
+	// This is a hack to ensure that component is removed from DOM if animation does not exit properly
+	// const [isPresent, safeToRemove] = usePresence();
+	// useEffect(() => { !isPresent && setTimeout(safeToRemove, 800); }, [isPresent]);
+
 	// useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
 	const { demoItems, subscriptionReady } = useTracker(() => {
 		const subscription = Meteor.subscribe(DemoItems.adminPublicationName);	// Get access to collection documents.
@@ -25,7 +29,7 @@ const ListDemoItemsAdmin = () => {
 		};
 	}, []);
 	return (
-		<motion.div initial={pageTransition.initial} animate={pageTransition.animate} exit={pageTransition.exit}>
+		<motion.div variants={animationVariants} initial="pageEnter" animate="pageAnimate" exit="pageLeave" layout className="w-100 position-fixed2">
 		{ subscriptionReady ? (
 			<Container className="py-3">
 				<Row className="justify-content-center">

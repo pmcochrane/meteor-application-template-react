@@ -1,7 +1,7 @@
-import React 														from 'react';
+import React, { useEffect } 										from 'react';
 import { useNavigate } 												from 'react-router-dom';
 import { Card, Col, Container, Row } 								from 'react-bootstrap';
-import { motion }													from 'framer-motion';
+import { motion, usePresence }										from 'framer-motion';
 
 import Swal 														from 'sweetalert2';
 import { AutoForm, ErrorsField, NumField, SelectField, SubmitField, TextField } 
@@ -12,7 +12,7 @@ import SimpleSchema 												from 'simpl-schema';
 import SimpleSchema2Bridge 											from 'uniforms-bridge-simple-schema-2';
 
 import { DemoItems } 												from '../../../api/DemoItemsCollection';
-import { pageTransition } 											from '../../components/AnimatedRoutes';
+import { animationVariants } 										from '../../components/AnimatedRoutes';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const formSchema = new SimpleSchema({
@@ -29,8 +29,11 @@ const bridge = new SimpleSchema2Bridge(formSchema);
 
 /* Renders the AddDemoItem page for adding a document. */
 const AddDemoItem = () => {
+	// This is a hack to ensure that component is removed from DOM if animation does not exit properly
+	const [isPresent, safeToRemove] = usePresence();
+	useEffect(() => { !isPresent && setTimeout(safeToRemove, 800); }, [isPresent]);
+
 	const navigate = useNavigate();
-	
 	// On submit, insert the data.
 	const submit = (data: any, formRef: any) => {
 		const { name, quantity, condition } = data;
@@ -52,7 +55,7 @@ const AddDemoItem = () => {
 	// Render the form. Use Uniforms: https://github.com/vazco/uniforms
 	let fRef: any = null;
 	return (
-		<motion.div initial={pageTransition.initial} animate={pageTransition.animate} exit={pageTransition.exit}>
+		<motion.div variants={animationVariants} initial="pageEnter" animate="pageAnimate" exit="pageLeave" layout>
 			<Container className="py-3">
 				<Row className="justify-content-center">
 					<Col xs={5}>
